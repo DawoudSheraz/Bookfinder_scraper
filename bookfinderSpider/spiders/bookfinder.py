@@ -12,7 +12,12 @@ class BookfinderSpider(CrawlSpider):
     ]
 
     def parse(self, response):
+        """
+        Reads isbn.txt file and calls form request for each entry.
 
+        :param response: fetched page for start_urls
+        :return: Form request for every ISBN in txt file
+        """
         input_data = open('isbn.txt', 'r')
         out = [isbn for isbn in input_data]
 
@@ -26,7 +31,12 @@ class BookfinderSpider(CrawlSpider):
             )
 
     def save_book_data(self, response):
+        """
+        Gets relevant book data from a url.
 
+        :param response: Fetched page
+        :return: item with extracted data
+        """
         # open('temp.html', 'w').write(response.body)
 
         book_finder_item_loader = BookfinderItemLoader(BookfinderItem())
@@ -45,7 +55,7 @@ class BookfinderSpider(CrawlSpider):
         Returns all available prices for a book.
 
         :param response: Fetched Page
-        :return: list of prices
+        :return: list of prices, empty if not found
         """
 
         data_table = response.css('.results-table-LogoRow.has-data')
